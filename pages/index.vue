@@ -2,7 +2,6 @@
   <div class="container">
     <div>
       <logo />
-      <logo />
       <h1 class="title">
         hack-u
       </h1>
