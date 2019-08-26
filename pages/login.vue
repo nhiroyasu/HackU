@@ -14,7 +14,6 @@
 
 .body-class {
   position: absolute;
-  background: linear-gradient(to left, #333,#eee);
   width: 100%;
   height: 100%;
 }
@@ -29,6 +28,10 @@
 }
 
 @media screen and (min-width: 501px) {
+  .body-class {
+    background: linear-gradient(to left, #333,#eee);
+  }
+
   .login-form {
     background: #2d3436;
     margin: 0px;
@@ -43,9 +46,13 @@
 }
 
 @media screen and (max-width: 500px) {
+  .body-class {
+    background: #2d3436;
+  }
+
   .login-form {
+    background: #2d3436;
     width: 100%;
-    height:auto;
   }
 }
 </style>
