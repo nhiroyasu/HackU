@@ -1,8 +1,24 @@
 <template>
   <div>
+    <myh />
     <nuxt />
+    <myf />
   </div>
 </template>
+
+
+<script>
+  import myh from '~/components/Header.vue'
+  import myf from '~/components/Footer.vue'
+
+  export default {
+    components: {
+      myh,
+      myf
+    }
+  }
+</script>
+
 
 <style>
 html {
@@ -52,4 +68,5 @@ html {
   color: #fff;
   background-color: #35495e;
 }
+
 </style>
