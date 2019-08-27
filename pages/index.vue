@@ -4,35 +4,36 @@
       <div id="hello-word">
         <p>DUSTへようこそ！</p>
       </div>
-    <div id="create-btn">
-      <button @click="openModal">作成</button>
+      <div id="create-btn">
+        <button @click="openModal">作成</button>
 
-      <fm @close="closeModal" v-if="modal">
-        <p>作品タイトル</p>
-        <div><input v-model="title"></div>
-        <p>説明</p>
-        <div><input v-model="Description"></div>
+        <fm @close="closeModal" v-if="modal">
+          <p>作品タイトル</p>
+          <div><input v-model="title"></div>
+          <p>説明</p>
+          <div><input v-model="Description"></div>
 
-        <template slot="footer">
-          <button @click="doSend">作成</button>
-        </template>
-      </fm>
-    </div>
+          <template slot="footer">
+            <button @click="doSend">作成</button>
+          </template>
+        </fm>
+      </div>
     </div>
 
     <div id="joined-room">
       <h2>参加した部屋</h2>
-      <div v-for="(value, index) in story_list" :key="index">
-        <room v-bind:sid="value[index]['sid']" v-bind:title="value[index]['title']" v-bind:author="value[index]['author']"/>
+      <div v-for="(value, index) in part_story_list" :key="index">
+        <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']"/>
       </div>
-      <room></room>
+      <!-- <room></room> -->
     </div>
 
     <div id="global-room">
-      <div>
-        <h2>他の部屋</h2>
+      <h2>他の部屋</h2>
+      <div v-for="(value, index) in story_list" :key="index">
+        <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']"/>
       </div>
-      <room></room>
+      <!-- <room></room> -->
     </div>
   </div>
 </template>
@@ -43,7 +44,7 @@
   import Fm from '~/components/Form.vue';
 
   // <add>
-  import firebase from '~/plugins/firebase.js';
+  import firebase from '~/plugins/firebase_auth.js';
   import rdb from '~/plugins/firebase_rdb.js';
   // <add>
 
@@ -61,21 +62,31 @@
       }
     },
     created: function() {
-      firebase.onAuth(this.$store);
+      firebase.process_Auth(this.$store).then((user) => {
+        rdb.load_stories(this.$store);
+        rdb.process_load_user_log(this.$store, user.uid).then(sp => {
+          var user_log = sp.val();
+          var sid_list = [];
+          for (var sid in user_log) {
+            sid_list.push(sid);
+          }
+          console.log(sid_list);
+          rdb.search_stories_info(this.$store, sid_list);
+        });
+      });
     },
     methods: {
       openModal: function(){
-        this.modal = true
+        this.modal = true;
       },
       closeModal: function(){
         this.modal = false
       },
       doSend: function(){
         if(this.title.length > 0 || this.Description.length > 0 ) {
-          alert(this.title)
-          this.title = ''
-          this.Description = ' '
-          this.closeModal()
+          alert(this.title);
+          rdb.create_story(this.$store, this.title, this.Description);
+          this.closeModal();
         }
 
         // else{
@@ -83,6 +94,16 @@
         // }
       }
     },
+    watch: {
+    },
+    computed: {
+      story_list: function(event) {
+        return this.$store.getters['stories/story_list'];
+      },
+      part_story_list: function(event) {
+        return this.$store.getters['story_manager/participate_stories']
+      }
+  }
   }
 </script>
 

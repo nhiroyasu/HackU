@@ -25,7 +25,7 @@
 
 
 <script>
-import firebase from '~/plugins/firebase.js';
+import firebase from '~/plugins/firebase_auth.js';
 
 export default {
   components: {

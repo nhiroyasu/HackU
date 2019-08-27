@@ -29,7 +29,7 @@
 
 
 <script>
-import firebase from '~/plugins/firebase.js';
+import firebase from '~/plugins/firebase_auth.js';
 
 const axios = require('axios');
 

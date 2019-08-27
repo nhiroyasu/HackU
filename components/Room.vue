@@ -1,31 +1,36 @@
 <template>
     <div id="room-main">
-            <div id="info-wrap">
-                <div id="title">
-                    <p>{{title}}</p>
-                </div>
-                <div id="author">
-                    <p>{{author}}</p>
-                </div>
+        <div id="info-wrap">
+            <div id="title">
+                <p>{{title}}</p>
             </div>
+            <div id="author">
+                <p>{{author}}</p>
+            </div>
+        </div>
 
-            <div id="join-btn">
-                <nuxt-link class="link" to="/story">参加する</nuxt-link>
-            </div>
+        <div id="join-btn">
+            <nuxt-link class="link" v-bind:to="to_story">参加する</nuxt-link>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
-  data: function() {
-    return {
-    };
-  },
-  props: {
-    sid: String,
-    title: String,
-    author: String,
-  },
+    data: function() {
+        return {
+        };
+    },
+    props: {
+        sid: String,
+        title: String,
+        author: String,
+    },
+    computed: {
+        to_story: function(event) {
+            return "/story_room/" + this.sid;
+        }
+    }
 }
 </script>
 
@@ -36,6 +41,6 @@ export default {
 }
 #join-btn{
     background: orange;
-    width:fit-content;
+    width: fit-content;
 }
 </style>

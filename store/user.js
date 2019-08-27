@@ -5,6 +5,7 @@ export const state = () => ({
     e_mail: '',
     state: false,
     type: 0,
+    log: {},
   });
   
   export const mutations = {
@@ -20,6 +21,9 @@ export const state = () => ({
     },
     onAuthType: function(state, type) {
       state.type = type;
+    },
+    onUserLogChanged: function(state, log) {
+      state.log = log;
     }
   };
   
@@ -49,6 +53,9 @@ export const state = () => ({
     },
     type: function(state) {
       return state.type;
+    },
+    user_log: function(state) {
+      return state.log;
     }
   };
   

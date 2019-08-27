@@ -1,7 +1,6 @@
 import firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/database';
-import { resolve } from 'url';
 
 
 export default {
@@ -20,23 +19,61 @@ export default {
       });
     })
   },
-  create_story(store, title) {
+  edit_user_name(uid, name) {
+    var userRef = firebase.database().ref('users');
+    if (name) {
+      userRef.child(uid + '/name').set(name).then(result => {
+        console.log("user name is edited.");
+      }).catch(error => {
+        console.log("user name is not edited.");
+        console.log(error);
+      });
+    }
+  },
+  edit_user_email(uid, e_mail) {
+    var userRef = firebase.database().ref('users');
+    if (e_mail) {
+      userRef.child(uid + '/e_mail').set(e_mail).then(result => {
+        console.log("e-mail is edited.");
+      }).catch(error => {
+        console.log("e-mail is not edited.");
+        console.log(error);
+      });
+    }
+  },
+  edit_user_pass(uid, pass) {
+    if (password) {
+      firebase.auth().currentUser.updatePassword(password).then(result => {
+        console.log("password is edited.");
+      }).catch(error => {
+        console.log("password is not edited.");
+        console.log(error);
+      });
+    }
+  },
+  edit_user_icon(uid, icon) {
+    // TODO
+  },
+
+  create_story(store, title, desc) {
     let now = new Date();
+    var now_time = [
+      now.getFullYear(),
+      ('0'+now.getMonth()+1).slice(-2),
+      ('0'+now.getDate()).slice(-2),
+      ('0'+now.getHours()).slice(-2),
+      ('0'+now.getMinutes()).slice(-2),
+      ('0'+now.getSeconds()).slice(-2),
+      ('0'+now.getMilliseconds()).slice(-3),
+      ].join('');
     firebase.database().ref().child('stories').push({
       "title": title,
+      "description": desc,
       "author": {
         "uid": firebase.auth().currentUser.uid,
         "name": store.getters['user/name'],
       },
-      "creation_date": [
-        now.getFullYear(),
-        now.getMonth()+1,
-        now.getDate(),
-        now.getHours(),
-        now.getMinutes(),
-        now.getSeconds(),
-        now.getMilliseconds(),
-      ].join('-'),
+      "creation_date":　now_time,
     }).then(result => {
       alert("creating a story is completed.");
     }).catch(error => {
@@ -127,6 +164,31 @@ export default {
         console.log(error);
       });
     })
+  },
 
-  }
+  load_user_log(store, uid) {
+    this.process_load_user_log(store, uid).then();
+  },
+  process_load_user_log(store, uid) {
+    return new Promise(resolve => {
+      var userLogRef = firebase.database().ref('users/' + uid + '/log');
+      userLogRef.on('value', snapshot => {
+        var log_data = snapshot.val();
+        store.commit('user/onUserLogChanged', log_data);
+        resolve(snapshot);
+      });
+    })
+  },
+
+  async search_stories_info(store, sid_s) {
+    var story_list = {};
+    for (var i=0; i<sid_s.length;i++) {
+      var sid = sid_s[i];
+      await firebase.database().ref('stories/' + sid).once('value').then(snapshot => {
+        var s_data = snapshot.val();
+        story_list[sid] = s_data;
+      });
+    }
+    store.commit('story_manager/onUserParticipateStoryChanged', story_list);
+  },
 }

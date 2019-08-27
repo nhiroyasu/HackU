@@ -68,8 +68,9 @@ export default {
   login_g_auth(store) {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(result => {
-      rdb.create_user(result.user.uid, result.user.displayName, result.user.email).then();
-      window.location.href = "/";
+      rdb.create_user(result.user.uid, result.user.displayName, result.user.email).then(result => {
+        window.location.href = "/";
+      });
       // this.process_get_user(store).then(snapshot => {
       //   store.commit('user/onUserStateChanged', true);
       //   store.commit('user/onAuthType', 2);
@@ -80,17 +81,23 @@ export default {
     firebase.auth().signOut();
   },
   onAuth(store, user_info=true) {
-    firebase.auth().onAuthStateChanged(user => {
-      user = user ? user : {};
-      store.commit('user/onAuthStateChanged', user);
-      store.commit('user/onUserStateChanged', user.uid ? true : false);
-      if (firebase.auth().currentUser) {
-        console.log("current user exsist");
-      } else {
-        console.log("current user not exsist");
-      }
-      if (user_info) this.get_user_info(store);
-    });
+    this.process_Auth(store, user_info).then();
+  },
+  process_Auth(store, user_info=true) {
+    return new Promise(resolve => {
+      firebase.auth().onAuthStateChanged(user => {
+        user = user ? user : {};
+        store.commit('user/onAuthStateChanged', user);
+        store.commit('user/onUserStateChanged', user.uid ? true : false);
+        if (firebase.auth().currentUser) {
+          console.log("current user exsist");
+          rdb.load_user_log(store, user.uid);
+        } else {
+          console.log("current user not exsist");
+        }
+        resolve(user);
+      });
+    })
   },
   get_user_info(store) {
     this.process_get_user(store).then();

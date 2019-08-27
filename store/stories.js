@@ -41,6 +41,7 @@ export const state = () => ({
       }
       return list;
     },
+
   
     contents_data: function(state) {
       return state.contents_data;
