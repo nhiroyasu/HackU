@@ -49,7 +49,7 @@ export const state = () => ({
       }
     },
     isSignedIn: function(state) {
-      return state.state ? 'true' : 'false';
+      return state.state;
     },
     type: function(state) {
       return state.type;

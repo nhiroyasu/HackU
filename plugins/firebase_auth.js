@@ -91,7 +91,10 @@ export default {
         store.commit('user/onUserStateChanged', user.uid ? true : false);
         if (firebase.auth().currentUser) {
           console.log("current user exsist");
-          rdb.load_user_log(store, user.uid);
+          if (user_info) {
+            this.get_user_info(store);
+            rdb.load_user_log(store, user.uid);
+          }
         } else {
           console.log("current user not exsist");
         }

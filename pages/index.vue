@@ -77,7 +77,12 @@
     },
     methods: {
       openModal: function(){
-        this.modal = true;
+        if (this.$store.getters['user/isSignedIn']) {
+          this.modal = true;
+        } else {
+          alert("ストーリーを作成するにはログインしてください");
+          window.location.href = "/login";
+        }
       },
       closeModal: function(){
         this.modal = false

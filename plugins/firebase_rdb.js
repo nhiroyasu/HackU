@@ -56,30 +56,37 @@ export default {
   },
 
   create_story(store, title, desc) {
-    let now = new Date();
-    var now_time = [
-      now.getFullYear(),
-      ('0'+now.getMonth()+1).slice(-2),
-      ('0'+now.getDate()).slice(-2),
-      ('0'+now.getHours()).slice(-2),
-      ('0'+now.getMinutes()).slice(-2),
-      ('0'+now.getSeconds()).slice(-2),
-      ('0'+now.getMilliseconds()).slice(-3),
-      ].join('');
-    firebase.database().ref().child('stories').push({
-      "title": title,
-      "description": desc,
-      "author": {
-        "uid": firebase.auth().currentUser.uid,
-        "name": store.getters['user/name'],
-      },
-      "creation_date":　now_time,
-    }).then(result => {
-      alert("creating a story is completed.");
-    }).catch(error => {
-      alert("creating a story is failed.");
-      console.log(error);
-    });
+    let user = firebase.auth().currentUser;
+    if (user) {
+      let now = new Date();
+      var now_time = [
+        now.getFullYear(),
+        ('0'+now.getMonth()+1).slice(-2),
+        ('0'+now.getDate()).slice(-2),
+        ('0'+now.getHours()).slice(-2),
+        ('0'+now.getMinutes()).slice(-2),
+        ('0'+now.getSeconds()).slice(-2),
+        ('0'+now.getMilliseconds()).slice(-3),
+        ].join('');
+      firebase.database().ref().child('stories').push({
+        "title": title,
+        "description": desc,
+        "author": {
+          "uid": firebase.auth().currentUser.uid,
+          "name": store.getters['user/name'],
+        },
+        "creation_date":　now_time,
+      }).then(result => {
+        alert("creating a story is completed.");
+      }).catch(error => {
+        alert("creating a story is failed.");
+        console.log(error);
+      });
+    } else {
+      console.log("not login");
+      window.location.href = "/login";
+    }
+
   },
 
   create_story_content(store, sid, content) {
