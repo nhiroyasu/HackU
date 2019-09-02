@@ -1,8 +1,6 @@
 <template>
     <footer id="footer">
-        <div id="footer-wrap">
-            <p>©二人は電気科</p>
-        </div>
+            <small>©二人は電気科</small>
     </footer>
 </template>
 
@@ -14,16 +12,14 @@
 
 <style>
     #footer {
-        width: 100%;
-        background-color: skyblue;
-        margin: 0;
-        padding: 0;
-        color: #111;
+        text-align: center;
+        color: #161616;
+        padding: 20px 0;
+        margin-top: auto;
     }
 
     #footer-wrap {
-        background: red;
-        margin: 10px 8px 10px 8px;
+        /* font-size: 12px; */
     }
 
 </style>

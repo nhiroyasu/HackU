@@ -8,7 +8,7 @@
 
                 <footer class="modal-footer">
                     <slot name="footer">
-                        <button @click="$emit('close')">Close</button>
+                        <!-- <button @click="$emit('close')"></button> -->
                     </slot>
                 </footer>
 
@@ -39,8 +39,11 @@
 
     .modal-window {
         background: #fff;
-        border-radius: 4px;
+        border-radius: 6px;
         overflow: hidden;
+        width:50vw;
+        height: 40vw;
+        position: relative;
     }
 
     .modal-content {
@@ -48,9 +51,14 @@
     }
 
     .modal-footer {
-        background: #ccc;
+        background: rgba(189, 189, 189, 0.493);
         padding: 10px;
+        width: 100%;
+        /* height: 20%; */
         text-align: right;
+        position: absolute;
+        bottom: 0;
+        right: 0;
     }
 
     /* .modal-enter-active,
