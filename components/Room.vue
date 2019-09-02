@@ -7,6 +7,9 @@
             <div id="author">
                 <p>by {{author}}</p>
             </div>
+            <div id="cre-day">
+                <p>作成日 {{}}</p>
+            </div>
             <nuxt-link id="join-btn" class="link" v-bind:to="to_story">参加する</nuxt-link>
         </div>
     </div>
@@ -49,19 +52,33 @@
     #title {
         font-size: 1.5vw;
         font-weight: bold;
+        margin-left: 5px;
+        margin-top: 5px;
         /* margin-left: 3%; */
-        position: absolute;
+        /* position: absolute;
         left: 3%;
-        top: 3%;
+        top: 3%; */
     }
 
     #author {
         /* margin-left: 3%; */
         font-size: 1.2vw;
         color: rgb(0, 0, 129);
-        position: absolute;
-        left: 3%;
-        bottom: 3%;
+        margin-left: 5px;
+        margin-top: 5px;
+        /* position: absolute;
+        left: 3%; */
+        /* bottom: 3%; */
+    }
+
+    #cre-day {
+        font-size: 1vw;
+        color: rgb(0, 0, 129);
+        margin-left: 5px;
+        margin-top: 5px;
+        /* position: absolute;
+        right: 12%;
+        bottom: 45%; */
     }
 
     #join-btn {
