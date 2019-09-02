@@ -52,23 +52,25 @@ export default {
       });
     }
   },
-  edit_user_icon(uid, type, icon_img) {
+  edit_user_icon(store, uid, type, icon_img) {
     if (icon_img) {
       var icon_path = 'user_icons/'+ uid + '.' + type;
       var storageRef = firebase.storage().ref();
       var userIconRef = storageRef.child(icon_path);
-      userIconRef.getDownloadURL().then(url => {
-        firebase.database().ref('users/'+uid).child('icon').set(url).then(result => {
-          console.log("icon link is edited.");
+      var imgUploadRef = userIconRef.put(icon_img).then(snapshot => {
+        // console.log("state:" + snapshot.state);
+        userIconRef.getDownloadURL().then(url => {
+          var dbIconRef = firebase.database().ref('users/'+uid);
+          dbIconRef.child('icon').set(url).then(result => {
+            // store.commit('user/onUserIconChanged', url);
+          }).catch(error => {
+            console.log("f: set icon link\n", error);
+          });
         }).catch(error => {
-          console.log("f: set icon link\n", error);
+          console.log(error);
         });
-      }).catch(error => {
-        console.log(error);
       });
-      userIconRef.put(icon_img).then(snapshot => {
-        console.log("state:" + snapshot.state);
-      });
+
     } else {
       alert('not icon_img');
     }
@@ -160,8 +162,10 @@ export default {
   },
 
   load_stories(store) {
-    firebase.database().ref('stories').on('value', snapshot => {
+    var storiesRef = firebase.database().ref('stories');
+    storiesRef.on('value', snapshot => {
       var story_data = snapshot.val();
+      console.log(story_data);
       if (story_data) {
         store.commit("stories/onStoriesChanged", snapshot.val());
       } else {

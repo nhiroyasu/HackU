@@ -80,6 +80,12 @@
         methods: {
             hideshow: function () {
                 this.show = !this.show
+                // if (this.$store.getters['user/isSignedIn']) {
+                    
+                // } else {
+                //     alert("ストーリーを作成するにはログインしてください");
+                //     window.location.href = "/login";
+                // }
                 if (this.maiki == '閲覧モード') {
                     this.maiki = '入力モード'
                 } else {
