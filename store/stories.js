@@ -24,6 +24,10 @@ export const state = () => ({
   };
   
   export const getters = {
+    story_dic: function(state) {
+      return state.stories ? state.stories : {};
+    },
+
     story_list: function(state) {
       let list = [];
       if (Object.keys(state.stories).length != 0) {
