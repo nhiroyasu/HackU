@@ -59,9 +59,12 @@
       <h2>参加した部屋</h2>
     </div>
     <div id="joined-room">
-      <div v-for="(value, index) in part_story_list" :key="index">
-        <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']" />
+      <div v-bind:v-if="part_story_list">
+        <div v-for="(value) in part_story_list">
+          <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']" />
+        </div>
       </div>
+
       <!-- <room>
         </room>-->
     </div>
@@ -71,9 +74,10 @@
     </div>
 
     <div id="global-room">
-      <div v-for="(value, index) in story_list" :key="index">
+      <div v-for="value in story_list">
         <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']" />
       </div>
+
       <!-- <room>
         </room>-->
     </div>
@@ -112,13 +116,12 @@
 
           rdb.process_load_user_log(this.$store, user.uid).then(sp => {
               var user_log = sp.val();
+              user_log ? user_log : [];
               var sid_list = [];
 
               for (var sid in user_log) {
                 sid_list.push(sid);
               }
-
-              console.log(sid_list);
               rdb.search_stories_info(this.$store, sid_list);
             }
 
@@ -156,13 +159,11 @@
     ,
     computed: {
       story_list: function (event) {
-          return this.$store.getters['stories/story_list'];
-        }
-
-        ,
+        return this.$store.getters['stories/story_list'];
+      },
       part_story_list: function (event) {
-        return this.$store.getters['story_manager/participate_stories']
-      }
+        return this.$store.getters['story_manager/participate_stories'];
+      },
     }
   }
 </script>

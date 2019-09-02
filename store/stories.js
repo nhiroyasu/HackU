@@ -27,8 +27,10 @@ export const state = () => ({
           dic["sid"] = sid;
           list.push(dic);
         }
+        return list;
+      } else {
+        return list;
       }
-      return list;
     },
   
     story_contents: function(state) {
@@ -38,8 +40,10 @@ export const state = () => ({
           let scid = state.story_contents[scid_key];
           list.push(scid);
         }
+        return list;
+      } else {
+        return false;
       }
-      return list;
     },
 
   

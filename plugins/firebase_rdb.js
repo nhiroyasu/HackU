@@ -161,7 +161,12 @@ export default {
 
   load_stories(store) {
     firebase.database().ref('stories').on('value', snapshot => {
-      store.commit("stories/onStoriesChanged", snapshot.val());
+      var story_data = snapshot.val();
+      if (story_data) {
+        store.commit("stories/onStoriesChanged", snapshot.val());
+      } else {
+        console.log("not found stories");
+      }
     });
   },
 
@@ -208,8 +213,12 @@ export default {
       var userLogRef = firebase.database().ref('users/' + uid + '/log');
       userLogRef.on('value', snapshot => {
         var log_data = snapshot.val();
-        store.commit('user/onUserLogChanged', log_data);
-        resolve(snapshot);
+        if (log_data) {
+          store.commit('user/onUserLogChanged', log_data);
+          resolve(snapshot);
+        } else {
+          console.log("not found user log");
+        }
       });
     })
   },
