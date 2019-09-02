@@ -76,6 +76,7 @@ export default {
   },
   logout() {
     firebase.auth().signOut();
+    window.location.href = "/";
   },
   onAuth(store, user_info=true) {
     this.process_Auth(store, user_info).then();

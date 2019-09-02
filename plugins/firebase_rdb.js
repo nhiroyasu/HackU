@@ -80,12 +80,12 @@ export default {
       let now = new Date();
       var now_time = [
         now.getFullYear(),
-        ('0'+now.getMonth()+1).slice(-2),
-        ('0'+now.getDate()).slice(-2),
-        ('0'+now.getHours()).slice(-2),
-        ('0'+now.getMinutes()).slice(-2),
-        ('0'+now.getSeconds()).slice(-2),
-        ('0'+now.getMilliseconds()).slice(-3),
+        ('0'+(now.getMonth()+1).toString()).slice(-2),
+        ('0'+now.getDate().toString()).slice(-2),
+        ('0'+now.getHours().toString()).slice(-2),
+        ('0'+now.getMinutes().toString()).slice(-2),
+        ('0'+now.getSeconds().toString()).slice(-2),
+        ('0'+now.getMilliseconds().toString()).slice(-3),
         ].join('');
       firebase.database().ref().child('stories').push({
         "title": title,
@@ -96,7 +96,7 @@ export default {
         },
         "creation_date":　now_time,
       }).then(result => {
-        alert("creating a story is completed.");
+        // alert("creating a story is completed.");
       }).catch(error => {
         alert("creating a story is failed.");
         console.log(error);
@@ -122,13 +122,13 @@ export default {
       var now = new Date();
       var now_time = [
         now.getFullYear(),
-        ('0'+now.getMonth()+1).slice(-2),
-        ('0'+now.getDate()).slice(-2),
-        ('0'+now.getHours()).slice(-2),
-        ('0'+now.getMinutes()).slice(-2),
-        ('0'+now.getSeconds()).slice(-2),
-        ('0'+now.getMilliseconds()).slice(-3),
-      ].join('');
+        ('0'+(now.getMonth()+1).toString()).slice(-2),
+        ('0'+now.getDate().toString()).slice(-2),
+        ('0'+now.getHours().toString()).slice(-2),
+        ('0'+now.getMinutes().toString()).slice(-2),
+        ('0'+now.getSeconds().toString()).slice(-2),
+        ('0'+now.getMilliseconds().toString()).slice(-3),
+        ].join('');
       var data = {};
       data[now_time] = pid;
       firebase.database().ref('stories/'+sid).child('contents').update(data).then(result => {
