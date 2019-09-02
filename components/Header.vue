@@ -54,7 +54,7 @@ import Down from '~/components/Down.vue'
         color: #111;
         position: relative;
         /* vertical-align: middle; */
-        /* border-bottom: solid 10px rgb(224, 224, 224); */
+        border-bottom: solid 1px rgb(224, 224, 224);
         /* margin-bottom: 5px; */
         /* display: flex;
         justify-content: center;
