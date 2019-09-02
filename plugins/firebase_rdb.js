@@ -11,7 +11,7 @@ export default {
         "name": name,
         "e_mail": e_mail,
       }).then((result)=>{
-        alert('Synchronization succeeded');
+        // alert('Synchronization succeeded');
         resolve ? resolve(result) : false;
       }).catch((error)=>{
         alert('Synchronization failed');

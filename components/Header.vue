@@ -5,9 +5,8 @@
             <div id="logo-wrap">
                 <nuxt-link class="link" id="logo" to="/">DUST</nuxt-link>
             </div>
-            <nuxt-link id="login-btn" class="link" to="/login">Login</nuxt-link>
-            <div class="icon">
-                <!-- <img v-bind:src="icon_link" alt="#" width="25" height="25"> -->
+            <nuxt-link v-if="show_login" id="login-btn" class="link" to="/login">Login</nuxt-link>
+            <div v-else class="icon">
                 <down />
             </div>
 
@@ -36,6 +35,10 @@ import Down from '~/components/Down.vue'
                 } else {
                     return this.user_icon;
                 }
+            },
+            show_login: function(event) {
+                console.log(this.$store.getters['user/user_id'] ? false : true);
+                return this.$store.getters['user/user_id'] ? false : true;
             }
         },
     }

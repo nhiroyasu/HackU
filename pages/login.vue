@@ -1,11 +1,11 @@
 <template>
   <div class='body-class'>
     <div class="login-form">
-      <auth-component service_name="google" v-bind:icon_link="g_ico" />
-      <auth-component service_name="twitter" v-bind:icon_link="t_ico" />
+      <auth-component service_name="google" v-bind:icon_link="g_ico" to_link="/google_auth" action="google_auth" />
+      <!-- <auth-component service_name="twitter" v-bind:icon_link="t_ico" />
       <auth-component service_name="github" v-bind:icon_link="git_ico" />
-      <auth-component service_name="microsoft" v-bind:icon_link="ms_ico" />
-      <auth-component service_name="mail" v-bind:icon_link="mail_ico" />
+      <auth-component service_name="microsoft" v-bind:icon_link="ms_ico" /> -->
+      <auth-component service_name="mail" v-bind:icon_link="mail_ico" to_link="/mail_auth" />
     </div>
   </div>
 </template>
@@ -61,6 +61,8 @@
 
 
 <script>
+import firebase from '~/plugins/firebase_auth.js';
+
 import AuthComponent from "~/components/AuthComponent.vue";
 import google_icon_img from "~/static/google_icon.png";
 import twitter_icon_img from "~/static/twitter_icon.png";
@@ -95,6 +97,12 @@ export default {
     microsoft_icon_img,
     mail_icon_img,
   },
+  method: {
+    google_auth: function(event) {
+      console.log("あれ？");
+      firebase.login_g_auth(this.$store);
+    }
+  }
 };
 
 </script>

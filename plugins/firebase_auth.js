@@ -68,10 +68,6 @@ export default {
       rdb.create_user(result.user.uid, result.user.displayName, result.user.email).then(result => {
         window.location.href = "/";
       });
-      // this.process_get_user(store).then(snapshot => {
-      //   store.commit('user/onUserStateChanged', true);
-      //   store.commit('user/onAuthType', 2);
-      // });
     });
   },
   logout() {
