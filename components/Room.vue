@@ -3,14 +3,13 @@
         <div id="info-wrap">
             <div id="title">
                 <p>{{title}}</p>
-                <p>{{get_story_creation_date}}</p>
                 <p>{{get_story_description}}</p>
             </div>
             <div id="author">
                 <p>by {{author}}</p>
             </div>
             <div id="cre-day">
-                <p>作成日 {{}}</p>
+                <p>{{get_story_creation_date}}</p>
             </div>
             <nuxt-link id="join-btn" class="link" v-bind:to="to_story">参加する</nuxt-link>
         </div>
