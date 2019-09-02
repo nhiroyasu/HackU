@@ -9,24 +9,36 @@
                 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
         </div>
-        <div id="main-contents">
-            <div class="story-contents" v-for="(value, index) in get_contents_data" :key="index">
-                <!-- <ChatBox v-bind:content="value['content']" /> -->
-                <p>{{value['content']}}</p>
-            </div>
-        </div>
+        <div id="con-wrap">
+            <div id="con-wrap1">
+                <div id="main-contents">
+                    <div class="story-contents" v-for="(value, index) in get_contents_data" :key="index">
+                        <!-- <ChatBox v-bind:content="value['content']" /> -->
+                        <p>{{value['content']}}</p>
+                    </div>
+                </div>
 
-        <div id="user-input-area">
-            <div id="change-btn">
-                <button v-on:click="hideshow">{{maiki}}</button>
-            </div>
-            <div id="bottom-func" v-show="show">
-                <div id="input-area">
-                    <textarea name="none" id="inputdoc" cols="95" rows="5" v-model="text"></textarea>
-                    <button v-on:click="on_submitted">送信</button>
+                <div id="user-input-area">
+                    <div id="change-btn">
+                        <button v-on:click="hideshow">{{maiki}}</button>
+                    </div>
+                    <div id="bottom-func" v-show="show">
+                        <div id="input-area">
+                            <textarea name="none" id="inputdoc" cols="60" rows="5" v-model="text"></textarea>
+                            <button v-on:click="on_submitted">送信</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+            <div id="rem-wrap">
 
+                <div id="con-wrap2">
+                    <p>Descriptionが入ります
+                    </p>
+                </div>
+                <button id="delete-btn">部屋の削除</button>
+            </div>
         </div>
     </div>
 </template>
@@ -48,7 +60,7 @@
                 func_link_base: "https://us-central1-dust-cf800.cloudfunctions.net/story_room/",
             }
         },
-        created: function() {
+        created: function () {
             firebase.process_get_user(this.$store).then(snapshot => {
                 rdb.check_story_auther(this.$store, this.$route.params['story_room']);
             });
@@ -73,7 +85,7 @@
             get_twitter_card_url: function (event) {
                 return this.func_link_base + this.$route.params['story_room'];
             },
-            get_story_author: function(event) {
+            get_story_author: function (event) {
                 return this.$store.getters['story_manager/story_author_state'];
             }
         },
@@ -91,7 +103,7 @@
                     rdb.create_story_content(this.$store, this.$route.params['story_room'], this.text);
                 }
             },
-            on_delete: function(event) {
+            on_delete: function (event) {
                 rdb.delete_story(this.$store.getters['user/user_id'], this.$route.params['story_room'])
             }
         },
@@ -110,7 +122,7 @@
     #story-room-title {
         /* background: darkblue; */
         padding: 0.5vw;
-        border-bottom: solid 2px rgb(19, 19, 19);
+        border-bottom: solid 2px rgb(87, 97, 119);
         line-height: 2vw;
         position: relative;
     }
@@ -134,7 +146,8 @@
         margin-top: 0.5vw;
         padding: 1vw;
     }
-    .story-contents{
+
+    .story-contents {
         border-bottom: solid 1px rgba(82, 82, 82, 0.253);
     }
 
@@ -160,6 +173,8 @@
         border: solid 2px gray;
         resize: vertical;
         min-height: 100px;
+        width: 80%;
+        /* font-family: serif; */
         /* widows: 100%;
         height: 10em; */
     }
@@ -221,5 +236,64 @@
         transition: .4s;
         /* display: inline-block; */
         /* text-align: right; */
+    }
+
+    #con-wrap {
+        position: relative;
+    }
+
+    #con-wrap1 {
+        /* background: #0004de; */
+        width: 72%;
+    }
+
+    #con-wrap2 {
+        /* background: #bd5aac; */
+        border: solid 2px rgba(133, 133, 133, 0.691);
+        padding: .5vw;
+        border-radius: 4px;
+        font-size: 1.2vw;
+        width: 100%;
+        overflow-y: scroll;
+        position: absolute;
+        top: 0;
+        right: 1%;
+        height: 35vw;
+        z-index: 10;
+    }
+
+    #delete-btn {
+        display: block;
+        font-size: 1vw;
+        width: 10vw;
+        padding: 0.6em;
+        text-align: center;
+        text-decoration: none;
+        color: #FFF;
+        background: #af3434;
+        /* border-bottom: 2px solid rgb(0, 62, 143); */
+        border-radius: 4px;
+        /* box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), 0 2px 2px rgba(0, 0, 0, 0.19); */
+        position: absolute;
+        right: 1%;
+        bottom: 0; 
+        z-index: 10;
+        user-select: none;
+        transition: .4s;
+    }
+
+    #delete-btn:hover {
+        background: #df6767;
+        transition: .4s;
+    }
+
+    #rem-wrap {
+        /* background: #0004de; */
+        height: 38vw;
+        display: inline-block;
+        width: 25%;
+        position: absolute;
+        top: 0;
+        right: 1%;
     }
 </style>
