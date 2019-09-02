@@ -1,5 +1,5 @@
 <template>
-  <section class='body-class'>
+  <div class='body-class'>
     <div class="login-form">
       <auth-component service_name="google" v-bind:icon_link="g_ico" />
       <auth-component service_name="twitter" v-bind:icon_link="t_ico" />
@@ -7,13 +7,13 @@
       <auth-component service_name="microsoft" v-bind:icon_link="ms_ico" />
       <auth-component service_name="mail" v-bind:icon_link="mail_ico" />
     </div>
-  </section>
+  </div>
 </template>
 
 <style scoped>
 
 .body-class {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
 }

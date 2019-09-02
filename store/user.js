@@ -6,6 +6,7 @@ export const state = () => ({
     state: false,
     type: 0,
     log: {},
+    icon: '',
   });
   
   export const mutations = {
@@ -24,6 +25,9 @@ export const state = () => ({
     },
     onUserLogChanged: function(state, log) {
       state.log = log;
+    },
+    onUserIconChanged: function(state, icon) {
+      state.icon = icon;
     }
   };
   
@@ -56,6 +60,9 @@ export const state = () => ({
     },
     user_log: function(state) {
       return state.log;
+    },
+    icon: function(state) {
+      return state.icon;
     }
   };
   

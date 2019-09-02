@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 
 
 export default {
@@ -41,7 +42,7 @@ export default {
       });
     }
   },
-  edit_user_pass(uid, pass) {
+  edit_user_pass(uid, password) {
     if (password) {
       firebase.auth().currentUser.updatePassword(password).then(result => {
         console.log("password is edited.");
@@ -51,8 +52,26 @@ export default {
       });
     }
   },
-  edit_user_icon(uid, icon) {
-    // TODO
+  edit_user_icon(uid, type, icon_img) {
+    if (icon_img) {
+      var icon_path = 'user_icons/'+ uid + '.' + type;
+      var storageRef = firebase.storage().ref();
+      var userIconRef = storageRef.child(icon_path);
+      userIconRef.getDownloadURL().then(url => {
+        firebase.database().ref('users/'+uid).child('icon').set(url).then(result => {
+          console.log("icon link is edited.");
+        }).catch(error => {
+          console.log("f: set icon link\n", error);
+        });
+      }).catch(error => {
+        console.log(error);
+      });
+      userIconRef.put(icon_img).then(snapshot => {
+        console.log("state:" + snapshot.state);
+      });
+    } else {
+      alert('not icon_img');
+    }
   },
 
   create_story(store, title, desc) {
@@ -132,6 +151,14 @@ export default {
     }
   },
 
+  delete_story(uid, sid) {
+    firebase.database().ref('stories').child(sid).remove().then(r => {
+      console.log("success?", r);
+    }).catch(error => {
+      console.log("error", error);
+    })
+  },
+
   load_stories(store) {
     firebase.database().ref('stories').on('value', snapshot => {
       store.commit("stories/onStoriesChanged", snapshot.val());
@@ -193,9 +220,45 @@ export default {
       var sid = sid_s[i];
       await firebase.database().ref('stories/' + sid).once('value').then(snapshot => {
         var s_data = snapshot.val();
-        story_list[sid] = s_data;
+        if (s_data != null) {
+          story_list[sid] = s_data;
+        } else {
+          story_list[sid] = {
+            "title": "このストーリーは削除されました",
+            "description": "このストーリーは削除されました",
+            "author": {
+              "name": "No",
+              "uid": "No",
+            }
+          }
+        }
       });
     }
     store.commit('story_manager/onUserParticipateStoryChanged', story_list);
   },
+
+  check_story_auther(store, sid) {
+    var uid = firebase.auth().currentUser.uid;
+    if (uid) {
+      firebase.database().ref('stories/' + sid).once('value').then(snapshot => {
+        var story_data = snapshot.val();
+        if (story_data) {
+          console.log(story_data.author.uid === uid);
+          store.commit('story_manager/onStoryAuthorChanged', story_data.author.uid === uid);
+        }
+      })
+    } else {
+      console.log("error", "user id is not finded.");
+    }
+  },
+
+  test() {
+    let ref = firebase.database().ref('stories/' + "1");
+    ref.once('value').then(r => {
+      console.log("snapshot", r.val());
+
+    }).catch(e => {
+      console.log("error", e);
+    })
+  }
 }

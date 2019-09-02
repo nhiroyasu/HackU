@@ -35,6 +35,7 @@
       </div>
       <!-- <room></room> -->
     </div>
+    <button v-on:click="test">TEST</button>
   </div>
 </template>
 
@@ -93,10 +94,9 @@
           rdb.create_story(this.$store, this.title, this.Description);
           this.closeModal();
         }
-
-        // else{
-        //   alert('メッセージを入力してください')
-        // }
+      },
+      test: function() {
+        rdb.test();
       }
     },
     watch: {

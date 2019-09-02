@@ -11,7 +11,7 @@
             </div>
 
             <div class="icon">
-                <!-- <img src="" alt=""> -->
+                <img v-bind:src="icon_link" alt="#" width="25" height="25">
                 <down />
             </div>
 
@@ -20,10 +20,27 @@
 </template>
 
 <script>
+import user_icon_img from "~/static/user_icon_default.png";
+
 import Down from '~/components/Down.vue'
     export default {
         components: {
             Down
+        },
+        data: function() {
+            return {
+                user_icon: user_icon_img,
+            }
+        },
+        computed: {
+            icon_link: function(event) {
+                var link = this.$store.getters['user/icon'];
+                if (link !== "") {
+                    return link;
+                } else {
+                    return this.user_icon;
+                }
+            }
         },
     }
 </script>

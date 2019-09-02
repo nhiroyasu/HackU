@@ -1,5 +1,6 @@
 <template>
     <div story-wrap>
+        <h2>{{  }}</h2>
         <div id="main-contents">
             <div class="story-contents" v-for="(value, index) in get_contents_data" :key="index">
                 <!-- <ChatBox v-bind:content="value['content']" /> -->
@@ -19,6 +20,8 @@
         <!-- Twitter共有ボタン -->
         <a href="https://twitter.com/share" class="twitter-share-button" data-text="このストーリールームを共有する" v-bind:data-url="get_twitter_card_url" data-lang="ja">Tweet</a>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        <button v-bind:v-if="get_story_author" v-on:click="on_delete">削除</button>
     </div>
 </template>
 
@@ -40,7 +43,9 @@
             }
         },
         created: function() {
-            firebase.onAuth(this.$store);
+            firebase.process_get_user(this.$store).then(snapshot => {
+                rdb.check_story_auther(this.$store, this.$route.params['story_room']);
+            });
             rdb.load_story_contents(this.$store, this.$route.params['story_room']);
         },
         computed: {
@@ -50,6 +55,9 @@
             get_twitter_card_url: function(event) {
                 return this.func_link_base + this.$route.params['story_room'];
             },
+            get_story_author: function(event) {
+                return this.$store.getters['story_manager/story_author_state'];
+            }
         },
         methods: {
             hideshow: function() {
@@ -65,6 +73,9 @@
                     rdb.create_story_content(this.$store, this.$route.params['story_room'], this.text);
                 }
             },
+            on_delete: function(event) {
+                rdb.delete_story(this.$store.getters['user/user_id'], this.$route.params['story_room'])
+            }
         },
     }
 </script>

@@ -12,7 +12,7 @@ if (!firebase.apps.length) {
     authDomain: "dust-cf800.firebaseapp.com",
     databaseURL: "https://dust-cf800.firebaseio.com",
     projectId: "dust-cf800",
-    storageBucket: "",
+    storageBucket: "dust-cf800.appspot.com",
     messagingSenderId: "34329787477",
     appId: "1:34329787477:web:743d73e8eb7348b6"
   };
@@ -30,9 +30,6 @@ export default {
     firebase.auth().createUserWithEmailAndPassword(email, pass).then((result)=>{
       console.log("Succeed Sign-Up");
       rdb.create_user(result.user.uid, name, email).then(_result => {
-        // store.commit('user/onUserStateChanged', true);
-        // store.commit('user/onUserInfoChanged', {e_mail: email, name: name});
-        // store.commit('user/onAuthType', 1);
         window.location.href="/";
       });
     }).catch((error) => {
@@ -109,18 +106,20 @@ export default {
     return new Promise(resolve => {
       let cur_user = firebase.auth().currentUser;
       if(cur_user) {
-        let user = firebase.database().ref('users/' + cur_user.uid);
-        user.on('value', (snapshot)=>{
-          let data = snapshot.val();
+        let userRef = firebase.database().ref('users/' + cur_user.uid);
+        userRef.on('value', (snapshot)=>{
+          let user = snapshot.val();
           store.commit('user/onAuthStateChanged', cur_user);
-          store.commit('user/onUserInfoChanged', {e_mail:data.e_mail, name:data.name});
+          store.commit('user/onUserInfoChanged', {e_mail:user.e_mail, name:user.name});
           store.commit('user/onUserStateChanged', true);
+          store.commit('user/onUserIconChanged', 'icon' in user ? user.icon : "");
           resolve(snapshot);
         });
       } else {
         store.commit('user/onAuthStateChanged', {});
         store.commit('user/onUserInfoChanged', {e_mail: '', name: ''});
         store.commit('user/onUserStateChanged', false);
+        store.commit('user/onUserIconChanged', "");
       }
     });
   }
