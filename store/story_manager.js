@@ -22,8 +22,10 @@ export const getters = {
                 dic["sid"] = sid;
                 list.push(dic);
             }
+            return list;
+        } else {
+            return list;
         }
-        return list;
     },
 
     story_author_state: function(state) {

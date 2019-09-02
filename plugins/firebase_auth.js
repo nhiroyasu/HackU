@@ -86,7 +86,7 @@ export default {
       firebase.auth().onAuthStateChanged(user => {
         user = user ? user : {};
         store.commit('user/onAuthStateChanged', user);
-        store.commit('user/onUserStateChanged', user.uid ? true : false);
+        store.commit('user/onUserStateChanged', user ? true : false);
         if (firebase.auth().currentUser) {
           console.log("current user exsist");
           if (user_info) {
