@@ -4,7 +4,7 @@
     <div id="verarea">
       <div id="hello-word">
         <div id="hello-word-wrap">
-          <h1>Create novel with us</h1>
+          <h1>Let's write a novel together</h1>
           <p>みんなで一つの小説を作成しよう！</p>
         </div>
       </div>
@@ -17,18 +17,18 @@
         </div> -->
         <div class="cre-section cre-des">
           <h3>Click</h3>
-          <p>　右のボタンを押して小説のタイトルと簡単な説明を入力しよう！
+          <p>右のボタンを押して小説のタイトルと簡単な説明を入力しましょう！
           </p>
         </div>
         <div class="cre-section cre-des">
           <h3>Input</h3>
-          <p>　小説を書き始めましょう。どのような始まりにするかは、あなた次第です。
+          <p>小説を書き始めましょう。どのような始まりにするかは、あなた次第です。
           </p>
         </div>
         <div class="cre-section cre-des">
           <h3>Share</h3>
           <p>
-            　みんなが参加できるようにTwitterで共有しましょう！
+            みんなが参加できるようにTwitterで共有しましょう！
           </p>
         </div>
         <button id="cbtn" class="cre-section" @click="openModal">物語を作る</button>
@@ -59,11 +59,9 @@
       <h2>参加した部屋</h2>
     </div>
     <div id="joined-room">
-      <div v-bind:v-if="part_story_list">
         <div v-for="(value) in part_story_list">
           <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']" />
         </div>
-      </div>
 
       <!-- <room>
         </room>-->
@@ -292,7 +290,7 @@
     /* background: blue; */
     width: 90%;
     margin: 0 auto;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px 10px;

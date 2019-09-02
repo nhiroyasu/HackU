@@ -2,7 +2,7 @@
     <div class="js-accordion" v-cloak>
         <div id="acc-btn-wrap">
             <button class="js-accordion--trigger icon" type="button" :class="{ '_state-open': isOpened }" @click="accordionToggle()">
-                <img v-bind:src="icon_link" alt="#" width="25" height="25">
+                <img v-bind:src="icon_link" alt="#" width="40" height="40">
             </button>
         </div>
         <div class="js-accordion--target" :class="{ '_state-open': isOpened }" v-if="isOpened">
@@ -82,8 +82,8 @@
 
     .js-accordion--trigger {
         background: rgb(255, 255, 255);
-        height: 25px;
-        width: 25px;
+        height: 40px;
+        width: 40px;
         border-radius: 50%;
         display: flex;
         justify-content: center;
@@ -92,7 +92,7 @@
     }
 
     .js-accordion--target {
-        background: seagreen;
+        /* background: seagreen; */
         position: absolute;
         left: -130px;
     }
