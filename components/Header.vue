@@ -37,7 +37,6 @@ import Down from '~/components/Down.vue'
                 }
             },
             show_login: function(event) {
-                console.log(this.$store.getters['user/user_id'] ? false : true);
                 return this.$store.getters['user/user_id'] ? false : true;
             }
         },

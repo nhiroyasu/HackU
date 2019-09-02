@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 
 import rdb from '~/plugins/firebase_rdb.js';
 
@@ -65,9 +66,15 @@ export default {
   login_g_auth(store) {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(result => {
-      rdb.create_user(result.user.uid, result.user.displayName, result.user.email).then(result => {
+      console.log("result", result);
+      if (result.isNewUser) {
+        rdb.create_user(result.user.uid, result.user.displayName, result.user.email).then(result => {
+          window.location.href = "/";
+        });
+      } else {
         window.location.href = "/";
-      });
+      }
+
     });
   },
   logout() {
@@ -82,7 +89,7 @@ export default {
       firebase.auth().onAuthStateChanged(user => {
         user = user ? user : {};
         store.commit('user/onAuthStateChanged', user);
-        store.commit('user/onUserStateChanged', user ? true : false);
+        store.commit('user/onUserStateChanged', user.uid ? true : false);
         if (firebase.auth().currentUser) {
           console.log("current user exsist");
           if (user_info) {
@@ -119,5 +126,7 @@ export default {
         store.commit('user/onUserIconChanged', "");
       }
     });
-  }
+  },
+
+
 };

@@ -133,7 +133,6 @@
     },
     method: {
       google_auth: function (event) {
-        console.log("あれ？");
         firebase.login_g_auth(this.$store);
       }
     }

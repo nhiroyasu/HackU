@@ -81,7 +81,7 @@
         },
         methods: {
             edit_name: function(event) {
-                rdb.edit_user_name(this.get_user_id(), name=this.name);
+                rdb.edit_user_name(this.user_id, name=this.name);
             },
             edit_email: function(event) {
                 rdb.edit_user_email(this.user_id, this.e_mail);
@@ -94,18 +94,18 @@
             },
             on_icon_changed: function(event) {
               var file = event.target.files[0];
-              console.log(file);
               var type = file["type"].replace("image/", "")
               var reader = new FileReader();
               var uid = this.user_id;
+              var store = this.$store;
               reader.onload = function() {
                 var bin_str = window.atob(reader.result.slice(reader.result.indexOf(',')+1));
                 var len = bin_str.length;
                 var bytes = new Uint8Array(len);
-                for (var i = 0; i < len; i++)        {
+                for (var i = 0; i < len; i++) {
                   bytes[i] = bin_str.charCodeAt(i);
                 }
-                rdb.edit_user_icon(uid, type, bytes.buffer);
+                rdb.edit_user_icon(store, uid, type, bytes.buffer);
               }
               reader.readAsDataURL(file);
             }
@@ -153,7 +153,7 @@
   outline: none;
   border: none;
   border-bottom: solid 1px #0984e3;
-  text-align: right;
+  text-align: left;
   padding: 0.2em 1em;
 }
 #wrap2 #icon-edit-group {

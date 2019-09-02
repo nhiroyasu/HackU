@@ -12,8 +12,7 @@
         <div id="con-wrap">
             <div id="con-wrap1">
                 <div id="main-contents">
-                    <div class="story-contents" v-for="(value, index) in get_contents_data" :key="index">
-                        <!-- <ChatBox v-bind:content="value['content']" /> -->
+                    <div class="story-contents" v-for="value in get_contents_data">
                         <p>{{value['content']}}</p>
                     </div>
                 </div>
@@ -34,10 +33,9 @@
             <div id="rem-wrap">
 
                 <div id="con-wrap2">
-                    <p>Descriptionが入ります
-                    </p>
+                    <p>{{get_story_description}}</p>
                 </div>
-                <button id="delete-btn">部屋の削除</button>
+                <button id="delete-btn" v-if="get_story_author" v-on:click="on_delete">部屋の削除</button>
             </div>
         </div>
     </div>
@@ -57,6 +55,7 @@
                 maiki: '閲覧モード',
                 show: false,
                 text: '',
+                author: this.$store.getters['story_manager/story_author_state'],
                 func_link_base: "https://us-central1-dust-cf800.cloudfunctions.net/story_room/",
             }
         },
@@ -72,12 +71,21 @@
                 var current_story_data = this.$store.getters['stories/current_story'];
                 return current_story_data.title
             },
+            get_story_description: function(event) {
+                var current_story_data = this.$store.getters['stories/current_story'];
+                var description = current_story_data.description;
+                return description ? description : "Not found description";
+            },
             get_story_last_update: function(event) {
                 var current_story_data = this.$store.getters['stories/current_story'];
-                var edit_dates = Object.keys(current_story_data.contents);
-                var last_update = edit_dates[edit_dates.length - 1];
-                last_update = last_update.slice(4, 6)+'月'+last_update.slice(6,8)+'日 '+last_update.slice(8, 10)+':'+last_update.slice(10,12);
-                return last_update;
+                if (current_story_data.contents) {
+                    var edit_dates = Object.keys(current_story_data.contents);
+                    var last_update = edit_dates[edit_dates.length - 1];
+                    last_update = last_update.slice(4, 6)+'月'+last_update.slice(6,8)+'日 '+last_update.slice(8, 10)+':'+last_update.slice(10,12);
+                    return last_update;
+                } else {
+                    return "更新なし";
+                }
             },
             get_contents_data: function (event) {
                 return this.$store.getters['stories/contents_data'];
@@ -92,6 +100,12 @@
         methods: {
             hideshow: function () {
                 this.show = !this.show
+                // if (this.$store.getters['user/isSignedIn']) {
+                    
+                // } else {
+                //     alert("ストーリーを作成するにはログインしてください");
+                //     window.location.href = "/login";
+                // }
                 if (this.maiki == '閲覧モード') {
                     this.maiki = '入力モード'
                 } else {
