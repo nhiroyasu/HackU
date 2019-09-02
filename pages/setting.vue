@@ -94,7 +94,6 @@
             },
             on_icon_changed: function(event) {
               var file = event.target.files[0];
-              console.log(file);
               var type = file["type"].replace("image/", "")
               var reader = new FileReader();
               var uid = this.user_id;

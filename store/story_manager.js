@@ -1,6 +1,6 @@
 export const state = () => ({
     participate_stories: {},
-    sotry_author: false,
+    story_author: 'user',
 });
 
 export const mutations = {
@@ -9,7 +9,7 @@ export const mutations = {
     },
 
     onStoryAuthorChanged(state, author) {
-        state.sotry_author = author;
+        state.story_author = author;
     }
 };
 

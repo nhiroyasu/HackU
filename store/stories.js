@@ -51,12 +51,12 @@ export const state = () => ({
         }
         return list;
       } else {
-        return false;
+        return list;
       }
     },
 
     contents_data: function(state) {
-      return state.contents_data;
+      return state.contents_data ? state.contents_data : [];
     },
 
     current_story: function(state) {

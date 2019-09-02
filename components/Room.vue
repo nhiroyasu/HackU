@@ -3,7 +3,6 @@
         <div id="info-wrap">
             <div id="title">
                 <p>{{title}}</p>
-                <p>{{get_story_description}}</p>
             </div>
             <div id="author">
                 <p>by {{author}}</p>
@@ -33,12 +32,6 @@
         computed: {
             to_story: function (event) {
                 return "/story_room/" + this.sid;
-            },
-            get_story_description: function(event) {
-                var story_dic = this.$store.getters['stories/story_dic'];
-                var this_s_data = story_dic[this.sid];
-                var description = this_s_data.description;
-                return description ? description : "Not found description";
             },
             get_story_creation_date: function(event) {
                 var story_dic = this.$store.getters['stories/story_dic'];

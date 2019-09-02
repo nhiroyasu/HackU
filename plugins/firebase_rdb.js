@@ -156,6 +156,7 @@ export default {
   delete_story(uid, sid) {
     firebase.database().ref('stories').child(sid).remove().then(r => {
       console.log("success?", r);
+      window.location.href = "/";
     }).catch(error => {
       console.log("error", error);
     })
@@ -165,7 +166,6 @@ export default {
     var storiesRef = firebase.database().ref('stories');
     storiesRef.on('value', snapshot => {
       var story_data = snapshot.val();
-      console.log(story_data);
       if (story_data) {
         store.commit("stories/onStoriesChanged", snapshot.val());
       } else {
@@ -184,14 +184,16 @@ export default {
     let ref = firebase.database().ref('stories/' + sid + '/contents');
     ref.on('value', snapshot => {
       var contents = snapshot.val();
-      store.commit("stories/onStoryContentsChanged", contents);
-      let story_contents = [];
-      for (var date in contents) {
-        this.load_story_contents_data(store, contents[date]).then(value => {
-          story_contents.push(value);
-        });
+      if (contents) {
+        store.commit("stories/onStoryContentsChanged", contents);
+        let story_contents = [];
+        for (var date in contents) {
+          this.load_story_contents_data(store, contents[date]).then(value => {
+            story_contents.push(value);
+          });
+        }
+        store.commit("stories/onContentsDataChanged", story_contents);
       }
-      store.commit("stories/onContentsDataChanged", story_contents);
     });
     let counterRef = firebase.database().ref('stories/' + sid + '/access_count');
     counterRef.transaction(current_value => {
@@ -204,9 +206,11 @@ export default {
       firebase.database().ref('story_contents/' + scid).once('value').then(snapshot => {
         let contents_data = {};
         var data = snapshot.val();
-        contents_data["uid"] = data.creation_user.uid;
-        contents_data["name"] = data.creation_user.name;
-        contents_data["content"] = data.content;
+        if (data) {
+          contents_data["uid"] = data.creation_user.uid;
+          contents_data["name"] = data.creation_user.name;
+          contents_data["content"] = data.content;
+        }
         resolve(contents_data);
       }).catch(error => {
         console.log("error");
@@ -259,13 +263,13 @@ export default {
   check_story_auther(store, sid) {
     var uid = firebase.auth().currentUser.uid;
     if (uid) {
-      firebase.database().ref('stories/' + sid).once('value').then(snapshot => {
+      firebase.database().ref('stories/' + sid).on('value', snapshot => {
         var story_data = snapshot.val();
         if (story_data) {
-          console.log(story_data.author.uid === uid);
-          store.commit('story_manager/onStoryAuthorChanged', story_data.author.uid === uid);
+          var r = story_data.author.uid === uid;
+          store.commit('story_manager/onStoryAuthorChanged', r);
         }
-      })
+      });
     } else {
       console.log("error", "user id is not finded.");
     }
