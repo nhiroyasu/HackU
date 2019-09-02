@@ -1,8 +1,7 @@
 <template>
     <div id="story-room-wrap">
         <div id="story-room-title">
-            <h2>作品タイトル
-            </h2>
+            <h2>{{get_story_title}} {{get_story_last_update}}</h2>
             <!-- Twitter共有ボタン -->
             <div id="twitter-btn">
                 <a href="https://twitter.com/share" class="twitter-share-button" data-text="このストーリールームを共有する"
@@ -65,9 +64,21 @@
             firebase.process_get_user(this.$store).then(snapshot => {
                 rdb.check_story_auther(this.$store, this.$route.params['story_room']);
             });
+            rdb.load_story_data(this.$store, this.$route.params['story_room']);
             rdb.load_story_contents(this.$store, this.$route.params['story_room']);
         },
         computed: {
+            get_story_title: function(event) {
+                var current_story_data = this.$store.getters['stories/current_story'];
+                return current_story_data.title
+            },
+            get_story_last_update: function(event) {
+                var current_story_data = this.$store.getters['stories/current_story'];
+                var edit_dates = Object.keys(current_story_data.contents);
+                var last_update = edit_dates[edit_dates.length - 1];
+                last_update = last_update.slice(4, 6)+'月'+last_update.slice(6,8)+'日 '+last_update.slice(8, 10)+':'+last_update.slice(10,12);
+                return last_update;
+            },
             get_contents_data: function (event) {
                 return this.$store.getters['stories/contents_data'];
             },

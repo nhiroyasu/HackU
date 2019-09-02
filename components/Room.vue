@@ -3,6 +3,8 @@
         <div id="info-wrap">
             <div id="title">
                 <p>{{title}}</p>
+                <p>{{get_story_creation_date}}</p>
+                <p>{{get_story_description}}</p>
             </div>
             <div id="author">
                 <p>by {{author}}</p>
@@ -16,6 +18,8 @@
 </template>
 
 <script>
+    import rdb from '~/plugins/firebase_rdb.js';
+
     export default {
         data: function () {
             return {};
@@ -25,10 +29,29 @@
             title: String,
             author: String,
         },
+        created: function() {
+        },
         computed: {
             to_story: function (event) {
                 return "/story_room/" + this.sid;
-            }
+            },
+            get_story_description: function(event) {
+                var story_dic = this.$store.getters['stories/story_dic'];
+                var this_s_data = story_dic[this.sid];
+                var description = this_s_data.description;
+                return description ? description : "Not found description";
+            },
+            get_story_creation_date: function(event) {
+                var story_dic = this.$store.getters['stories/story_dic'];
+                var this_s_data = story_dic[this.sid];
+                if (this_s_data) {
+                    var cre_date = this_s_data.creation_date;
+                    cre_date = cre_date.slice(0, 4)+'/'+cre_date.slice(4,6)+'/'+cre_date.slice(6,8);
+                    return cre_date;
+                } else {
+                    return "Not found creation_date";
+                }
+            },
         }
     }
 </script>

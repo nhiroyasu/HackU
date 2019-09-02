@@ -2,23 +2,32 @@ export const state = () => ({
     stories: [],
     story_contents: {},
     contents_data: [],
+    current_story: {},
   });
   
   export const mutations = {
     onStoriesChanged: function(state, stories) {
-      state.stories = stories;
+      state.stories = stories ? stories : [];
     },
   
     onStoryContentsChanged: function(state, contents) {
-      state.story_contents = contents
+      state.story_contents = contents ? contents : {};
     },
   
     onContentsDataChanged: function(state, datas) {
-      state.contents_data = datas;
+      state.contents_data = datas ? datas : [];
     },
+
+    onCurrentStoryChanged: function(state, story) {
+      state.current_story = story;
+    }
   };
   
   export const getters = {
+    story_dic: function(state) {
+      return state.stories ? state.stories : {};
+    },
+
     story_list: function(state) {
       let list = [];
       if (Object.keys(state.stories).length != 0) {
@@ -46,9 +55,12 @@ export const state = () => ({
       }
     },
 
-  
     contents_data: function(state) {
       return state.contents_data;
+    },
+
+    current_story: function(state) {
+      return state.current_story ? state.current_story : {};
     }
   }
   
