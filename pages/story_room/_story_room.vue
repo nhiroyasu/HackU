@@ -12,7 +12,7 @@
         <div id="con-wrap">
             <div id="con-wrap1">
                 <div id="main-contents">
-                    <div class="story-contents" v-for="value in get_contents_data">
+                    <div class="story-contents" v-for="(value,index) in get_contents_data" :key="index">
                         <p>{{value['content']}}</p>
                     </div>
                 </div>

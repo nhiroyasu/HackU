@@ -17,19 +17,17 @@
         </div> -->
         <div class="cre-section cre-des">
           <h3>Click</h3>
-          <p>　右のボタンを押して小説のタイトルと簡単な説明を入力しよう！
+          <p>右のボタンを押して小説のタイトルと簡単な説明を入力しよう！
           </p>
         </div>
         <div class="cre-section cre-des">
           <h3>Input</h3>
-          <p>　小説を書き始めましょう。どのような始まりにするかは、あなた次第です。
+          <p>小説を書き始めましょう。どのような始まりにするかは、あなた次第です。
           </p>
         </div>
         <div class="cre-section cre-des">
           <h3>Share</h3>
-          <p>
-            　みんなが参加できるようにTwitterで共有しましょう！
-          </p>
+          <p>みんなが参加できるようにTwitterで共有しましょう！</p>
         </div>
         <button id="cbtn" class="cre-section" @click="openModal">物語を作る</button>
       </div>
@@ -59,10 +57,8 @@
       <h2>参加した部屋</h2>
     </div>
     <div id="joined-room">
-      <div v-bind:v-if="part_story_list">
-        <div v-for="(value) in part_story_list">
-          <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']" />
-        </div>
+      <div v-for="(value, index) in part_story_list" :key="index">
+        <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']" />
       </div>
 
       <!-- <room>
@@ -74,7 +70,7 @@
     </div>
 
     <div id="global-room">
-      <div v-for="value in story_list">
+      <div v-for="(value, index) in story_list" :key="index">
         <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']" />
       </div>
 

@@ -19,7 +19,7 @@ export const state = () => ({
     },
 
     onCurrentStoryChanged: function(state, story) {
-      state.current_story = story;
+      state.current_story = story ? story : {};
     }
   };
   
