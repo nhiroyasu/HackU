@@ -77,7 +77,6 @@
       <!-- <room>
         </room>-->
     </div>
-
   </div>
 </template>
 <script>
@@ -129,26 +128,25 @@
 
       ,
     methods: {
-      openModal: function () {
+      openModal: function(){
+        if (this.$store.getters['user/isSignedIn']) {
           this.modal = true;
+        } else {
+          alert("ストーリーを作成するにはログインしてください");
+          window.location.href = "/login";
         }
-
-        ,
-      closeModal: function () {
-          this.modal = false
-        }
-
-        ,
-      doSend: function () {
-        if (this.title.length > 0 || this.Description.length > 0) {
-          alert(this.title);
+      },
+      closeModal: function(){
+        this.modal = false
+      },
+      doSend: function(){
+        if(this.title.length > 0 || this.Description.length > 0 ) {
           rdb.create_story(this.$store, this.title, this.Description);
           this.closeModal();
         }
-
-        // else{
-        //   alert('メッセージを入力してください')
-        // }
+      },
+      test: function() {
+        rdb.test();
       }
     }
 

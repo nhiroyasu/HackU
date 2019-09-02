@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <div>
     <div class="container">
       <form action="/" method="post" v-on:submit.prevent="on_submitted">
         <div class="form-item" v-if="sign_type">
@@ -24,7 +24,7 @@
         </div>
       </form>
     </div>
-  </section>
+  </div>
 </template>
 
 
@@ -68,7 +68,7 @@ export default {
 
 <style scoped>
 .container {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   background: linear-gradient(to left, #333,#eee);

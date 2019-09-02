@@ -1,8 +1,9 @@
 <template>
     <div class="js-accordion" v-cloak>
         <div id="acc-btn-wrap">
-            <button class="js-accordion--trigger icon" type="button" :class="{ '_state-open': isOpened }"
-                @click="accordionToggle()"></button>
+            <button class="js-accordion--trigger icon" type="button" :class="{ '_state-open': isOpened }" @click="accordionToggle()">
+                <img v-bind:src="icon_link" alt="#" width="25" height="25">
+            </button>
         </div>
         <div class="js-accordion--target" :class="{ '_state-open': isOpened }" v-if="isOpened">
             <div class="js-accordion--body">
@@ -11,24 +12,49 @@
                 </div>
                 <div class="menuchild">使い方</div>
                 <div class="menuchild">ヘルプ</div>
-                <div class="menuchild">ログアウト</div>
+                <div class="menuchild" v-if="current_user">
+                    <a id="set2" class="link" v-on:click="logout">ログアウト</a>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import user_icon_img from "~/static/user_icon_default.png";
+    import firebase from '~/plugins/firebase_auth.js';
+    import rdb from '~/plugins/firebase_rdb.js';
+
     export default {
         data() {
             return {
-                isOpened: false
+                isOpened: false,
+                user_icon: user_icon_img,
             };
+        },
+
+        computed: {
+            icon_link: function(event) {
+                var link = this.$store.getters['user/icon'];
+                if (link !== "") {
+                    return link;
+                } else {
+                    return this.user_icon;
+                }
+            },
+            current_user: function(event) {
+                var uid = this.$store.getters['user/user_id'];
+                return uid ? true : false;
+            }
         },
 
         methods: {
             accordionToggle: function () {
                 this.isOpened = !this.isOpened
             },
+            logout: function() {
+                firebase.logout();
+            }
         },
     }
 </script>
@@ -55,9 +81,9 @@
     }
 
     .js-accordion--trigger {
-        background: rebeccapurple;
-        height: 20px;
-        width: 20px;
+        background: rgb(255, 255, 255);
+        height: 25px;
+        width: 25px;
         border-radius: 50%;
         display: flex;
         justify-content: center;
@@ -103,4 +129,8 @@
         padding:10px 50px;
         /* font-size: 20px; */
     }
+    #set2 {
+        padding:10px 30px;
+    }
+    
 </style>

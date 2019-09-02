@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 const db = admin.database();
+const storage = admin.storage();
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -39,12 +40,12 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
       <meta name="viewport" content="width=device-width,initial-scale=1.0">
       <title>colorinco</title>
       <meta property="og:title" content="${TITLE}">
-      <meta property="og:image" content="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png">
+      <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/dust-cf800.appspot.com/o/AppMaterial%2Ficon.png?alt=media">
       <meta property="og:description" content="${DESCRIPTION}">
       <meta property="og:type" content="article">
       <meta name="twitter:card" content="summary_large_image">
       <meta name="twitter:title" content="${TITLE}">
-      <meta name="twitter:image" content="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png">
+      <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/dust-cf800.appspot.com/o/AppMaterial%2Ficon.png?alt=media">
       <meta name="twitter:description" content="${DESCRIPTION}">
     </head>
     <body>

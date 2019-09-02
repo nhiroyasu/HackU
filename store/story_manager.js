@@ -1,11 +1,15 @@
 export const state = () => ({
     participate_stories: {},
-
+    sotry_author: false,
 });
 
 export const mutations = {
     onUserParticipateStoryChanged(state, p_stories) {
         state.participate_stories = p_stories;
+    },
+
+    onStoryAuthorChanged(state, author) {
+        state.sotry_author = author;
     }
 };
 
@@ -20,5 +24,9 @@ export const getters = {
             }
         }
         return list;
+    },
+
+    story_author_state: function(state) {
+        return state.story_author;
     }
 };

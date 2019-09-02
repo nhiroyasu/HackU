@@ -49,8 +49,10 @@
                 func_link_base: "https://us-central1-dust-cf800.cloudfunctions.net/story_room/",
             }
         },
-        created: function () {
-            firebase.onAuth(this.$store);
+        created: function() {
+            firebase.process_get_user(this.$store).then(snapshot => {
+                rdb.check_story_auther(this.$store, this.$route.params['story_room']);
+            });
             rdb.load_story_contents(this.$store, this.$route.params['story_room']);
         },
         computed: {
@@ -60,6 +62,9 @@
             get_twitter_card_url: function (event) {
                 return this.func_link_base + this.$route.params['story_room'];
             },
+            get_story_author: function(event) {
+                return this.$store.getters['story_manager/story_author_state'];
+            }
         },
         methods: {
             hideshow: function () {
@@ -75,6 +80,9 @@
                     rdb.create_story_content(this.$store, this.$route.params['story_room'], this.text);
                 }
             },
+            on_delete: function(event) {
+                rdb.delete_story(this.$store.getters['user/user_id'], this.$route.params['story_room'])
+            }
         },
     }
 </script>

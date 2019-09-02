@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 
 
 export default {
@@ -41,7 +42,7 @@ export default {
       });
     }
   },
-  edit_user_pass(uid, pass) {
+  edit_user_pass(uid, password) {
     if (password) {
       firebase.auth().currentUser.updatePassword(password).then(result => {
         console.log("password is edited.");
@@ -51,35 +52,60 @@ export default {
       });
     }
   },
-  edit_user_icon(uid, icon) {
-    // TODO
+  edit_user_icon(uid, type, icon_img) {
+    if (icon_img) {
+      var icon_path = 'user_icons/'+ uid + '.' + type;
+      var storageRef = firebase.storage().ref();
+      var userIconRef = storageRef.child(icon_path);
+      userIconRef.getDownloadURL().then(url => {
+        firebase.database().ref('users/'+uid).child('icon').set(url).then(result => {
+          console.log("icon link is edited.");
+        }).catch(error => {
+          console.log("f: set icon link\n", error);
+        });
+      }).catch(error => {
+        console.log(error);
+      });
+      userIconRef.put(icon_img).then(snapshot => {
+        console.log("state:" + snapshot.state);
+      });
+    } else {
+      alert('not icon_img');
+    }
   },
 
   create_story(store, title, desc) {
-    let now = new Date();
-    var now_time = [
-      now.getFullYear(),
-      ('0'+now.getMonth()+1).slice(-2),
-      ('0'+now.getDate()).slice(-2),
-      ('0'+now.getHours()).slice(-2),
-      ('0'+now.getMinutes()).slice(-2),
-      ('0'+now.getSeconds()).slice(-2),
-      ('0'+now.getMilliseconds()).slice(-3),
-      ].join('');
-    firebase.database().ref().child('stories').push({
-      "title": title,
-      "description": desc,
-      "author": {
-        "uid": firebase.auth().currentUser.uid,
-        "name": store.getters['user/name'],
-      },
-      "creation_date":　now_time,
-    }).then(result => {
-      alert("creating a story is completed.");
-    }).catch(error => {
-      alert("creating a story is failed.");
-      console.log(error);
-    });
+    let user = firebase.auth().currentUser;
+    if (user) {
+      let now = new Date();
+      var now_time = [
+        now.getFullYear(),
+        ('0'+(now.getMonth()+1).toString()).slice(-2),
+        ('0'+now.getDate().toString()).slice(-2),
+        ('0'+now.getHours().toString()).slice(-2),
+        ('0'+now.getMinutes().toString()).slice(-2),
+        ('0'+now.getSeconds().toString()).slice(-2),
+        ('0'+now.getMilliseconds().toString()).slice(-3),
+        ].join('');
+      firebase.database().ref().child('stories').push({
+        "title": title,
+        "description": desc,
+        "author": {
+          "uid": firebase.auth().currentUser.uid,
+          "name": store.getters['user/name'],
+        },
+        "creation_date":　now_time,
+      }).then(result => {
+        // alert("creating a story is completed.");
+      }).catch(error => {
+        alert("creating a story is failed.");
+        console.log(error);
+      });
+    } else {
+      console.log("not login");
+      window.location.href = "/login";
+    }
+
   },
 
   create_story_content(store, sid, content) {
@@ -96,13 +122,13 @@ export default {
       var now = new Date();
       var now_time = [
         now.getFullYear(),
-        ('0'+now.getMonth()+1).slice(-2),
-        ('0'+now.getDate()).slice(-2),
-        ('0'+now.getHours()).slice(-2),
-        ('0'+now.getMinutes()).slice(-2),
-        ('0'+now.getSeconds()).slice(-2),
-        ('0'+now.getMilliseconds()).slice(-3),
-      ].join('');
+        ('0'+(now.getMonth()+1).toString()).slice(-2),
+        ('0'+now.getDate().toString()).slice(-2),
+        ('0'+now.getHours().toString()).slice(-2),
+        ('0'+now.getMinutes().toString()).slice(-2),
+        ('0'+now.getSeconds().toString()).slice(-2),
+        ('0'+now.getMilliseconds().toString()).slice(-3),
+        ].join('');
       var data = {};
       data[now_time] = pid;
       firebase.database().ref('stories/'+sid).child('contents').update(data).then(result => {
@@ -123,6 +149,14 @@ export default {
     } else {
       console.log("At save_contetns_log: auth user isn't finded.");
     }
+  },
+
+  delete_story(uid, sid) {
+    firebase.database().ref('stories').child(sid).remove().then(r => {
+      console.log("success?", r);
+    }).catch(error => {
+      console.log("error", error);
+    })
   },
 
   load_stories(store) {
@@ -186,9 +220,45 @@ export default {
       var sid = sid_s[i];
       await firebase.database().ref('stories/' + sid).once('value').then(snapshot => {
         var s_data = snapshot.val();
-        story_list[sid] = s_data;
+        if (s_data != null) {
+          story_list[sid] = s_data;
+        } else {
+          story_list[sid] = {
+            "title": "このストーリーは削除されました",
+            "description": "このストーリーは削除されました",
+            "author": {
+              "name": "No",
+              "uid": "No",
+            }
+          }
+        }
       });
     }
     store.commit('story_manager/onUserParticipateStoryChanged', story_list);
   },
+
+  check_story_auther(store, sid) {
+    var uid = firebase.auth().currentUser.uid;
+    if (uid) {
+      firebase.database().ref('stories/' + sid).once('value').then(snapshot => {
+        var story_data = snapshot.val();
+        if (story_data) {
+          console.log(story_data.author.uid === uid);
+          store.commit('story_manager/onStoryAuthorChanged', story_data.author.uid === uid);
+        }
+      })
+    } else {
+      console.log("error", "user id is not finded.");
+    }
+  },
+
+  test() {
+    let ref = firebase.database().ref('stories/' + "1");
+    ref.once('value').then(r => {
+      console.log("snapshot", r.val());
+
+    }).catch(e => {
+      console.log("error", e);
+    })
+  }
 }
