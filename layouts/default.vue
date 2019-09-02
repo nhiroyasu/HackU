@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="allwrap">
     <myh />
     <nuxt />
     <myf />
@@ -40,6 +40,26 @@ html {
   margin: 0;
 }
 
+input, button, textarea, select {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+input,
+textarea {
+	/* margin-top: 1em; */
+	padding: .5vw;
+  border-radius: 4px;
+  font-size: 1.6vw;
+}
+
 .button--green {
   display: inline-block;
   border-radius: 4px;
@@ -69,4 +89,10 @@ html {
   background-color: #35495e;
 }
 
+#allwrap {
+  /* background: slateblue; */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 </style>

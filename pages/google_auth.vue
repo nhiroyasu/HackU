@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="main">
     <div>
       <div class="auth-detail">
         <h1>{{title}}</h1>
