@@ -2,7 +2,7 @@
   <div class="auth-service">
     <div class="auth-link-block">
       <p>
-        <nuxt-link v-bind:to="link">
+        <nuxt-link v-bind:to="to_link">
           <img v-bind:src="icon_link" alt="#">
           {{service_name}}でログイン
         </nuxt-link>
@@ -50,11 +50,15 @@
 </style>
 
 <script>
+import firebase from '~/plugins/firebase_auth.js';
+
 export default {
   name: "auth-link-block",
   props: {
     service_name: String,
     icon_link: String,
+    to_link: String,
+    action: String,
   },
   components: {
 
@@ -63,6 +67,6 @@ export default {
     return {
       link: '/' + this.service_name + '_auth'
     };
-  },
+  }
 }
 </script>
