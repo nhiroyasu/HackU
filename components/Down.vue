@@ -11,6 +11,7 @@
                 </div>
                 <div class="menuchild">使い方</div>
                 <div class="menuchild">ヘルプ</div>
+                <div class="menuchild">ログアウト</div>
             </div>
         </div>
     </div>
