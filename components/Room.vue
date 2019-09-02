@@ -3,6 +3,7 @@
         <div id="info-wrap">
             <div id="title">
                 <p>{{title}}</p>
+                <p>{{get_story_creation_date}}</p>
             </div>
             <div id="author">
                 <p>by {{author}}</p>
@@ -22,10 +23,19 @@
             title: String,
             author: String,
         },
+        created: function() {
+            rdb.load_story_data(this.$store, this.$route.params['story_room']);
+        },
         computed: {
             to_story: function (event) {
                 return "/story_room/" + this.sid;
-            }
+            },
+            get_story_creation_date: function(event) {
+                var current_story_data = this.$store.getters['stories/current_story'];
+                var cre_date = current_story_data.creation_date;
+                cre_date = cre_date.slice(0, 4)+'/'+cre_date.slice(4,6)+'/'+cre_date.slice(6,8);
+                return cre_date;
+            },
         }
     }
 </script>

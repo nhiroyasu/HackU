@@ -147,7 +147,7 @@ export default {
     if (user) {
       firebase.database().ref('users/'+user.uid+'/log').child(sid).update(data);
     } else {
-      console.log("At save_contetns_log: auth user isn't finded.");
+      console.log("At save_contentns_log: auth user isn't finded.");
     }
   },
 
@@ -169,7 +169,13 @@ export default {
       }
     });
   },
-
+  load_story_data(store, sid) {
+    let ref = firebase.database().ref('stories/' + sid);
+    ref.on('value', snapshot => {
+      var story_data = snapshot.val();
+      store.commit("stories/onCurrentStoryChanged", story_data);
+    });
+  },
   load_story_contents(store, sid) {
     let ref = firebase.database().ref('stories/' + sid + '/contents');
     ref.on('value', snapshot => {
