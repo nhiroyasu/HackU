@@ -166,11 +166,13 @@ export default {
     var storiesRef = firebase.database().ref('stories');
     storiesRef.on('value', snapshot => {
       var story_data = snapshot.val();
-      if (story_data) {
-        store.commit("stories/onStoriesChanged", snapshot.val());
-      } else {
-        console.log("not found stories");
-      }
+      store.commit("stories/onStoriesChanged", snapshot.val());
+      // if (story_data) {
+      //   store.commit("stories/onStoriesChanged", snapshot.val());
+      // } else {
+      //   console.log("not found stories");
+      //   store.commit("stories/onStoriesChanged", null);
+      // }
     });
   },
   load_story_data(store, sid) {
@@ -184,16 +186,14 @@ export default {
     let ref = firebase.database().ref('stories/' + sid + '/contents');
     ref.on('value', snapshot => {
       var contents = snapshot.val();
-      if (contents) {
-        store.commit("stories/onStoryContentsChanged", contents);
-        let story_contents = [];
-        for (var date in contents) {
-          this.load_story_contents_data(store, contents[date]).then(value => {
-            story_contents.push(value);
-          });
-        }
-        store.commit("stories/onContentsDataChanged", story_contents);
+      store.commit("stories/onStoryContentsChanged", contents);
+      let story_contents = [];
+      for (var date in contents) {
+        this.load_story_contents_data(store, contents[date]).then(value => {
+          story_contents.push(value);
+        });
       }
+      store.commit("stories/onContentsDataChanged", story_contents);
     });
     let counterRef = firebase.database().ref('stories/' + sid + '/access_count');
     counterRef.transaction(current_value => {
@@ -272,6 +272,7 @@ export default {
       });
     } else {
       console.log("error", "user id is not finded.");
+      store.commit('story_manager/onStoryAuthorChanged', false);
     }
   },
 

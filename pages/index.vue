@@ -27,9 +27,7 @@
         </div>
         <div class="cre-section cre-des">
           <h3>Share</h3>
-          <p>
-            みんなが参加できるようにTwitterで共有しましょう！
-          </p>
+          <p>みんなが参加できるようにTwitterで共有しましょう！</p>
         </div>
         <button id="cbtn" class="cre-section" @click="openModal">物語を作る</button>
       </div>
@@ -59,9 +57,9 @@
       <h2>参加した部屋</h2>
     </div>
     <div id="joined-room">
-        <div v-for="(value) in part_story_list">
-          <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']" />
-        </div>
+      <div v-for="(value, index) in part_story_list" :key="index">
+        <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']" />
+      </div>
 
       <!-- <room>
         </room>-->
@@ -72,7 +70,7 @@
     </div>
 
     <div id="global-room">
-      <div v-for="value in story_list">
+      <div v-for="(value, index) in story_list" :key="index">
         <room v-bind:sid="value['sid']" v-bind:title="value['title']" v-bind:author="value['author']['name']" />
       </div>
 
@@ -105,26 +103,23 @@
           title: '',
           Description: ''
         }
-      }
-
-      ,
+      },
     created: function () {
-        firebase.process_Auth(this.$store).then((user) => {
-          rdb.load_stories(this.$store);
+      firebase.process_Auth(this.$store).then((user) => {
+        rdb.load_stories(this.$store);
 
-          rdb.process_load_user_log(this.$store, user.uid).then(sp => {
-              var user_log = sp.val();
-              user_log ? user_log : [];
-              var sid_list = [];
+        rdb.process_load_user_log(this.$store, user.uid).then(sp => {
+            var user_log = sp.val();
+            user_log ? user_log : [];
+            var sid_list = [];
 
-              for (var sid in user_log) {
-                sid_list.push(sid);
-              }
-              rdb.search_stories_info(this.$store, sid_list);
+            for (var sid in user_log) {
+              sid_list.push(sid);
             }
-
-          );
-        });
+            rdb.search_stories_info(this.$store, sid_list);
+          }
+        );
+      });
       }
 
       ,
@@ -133,8 +128,10 @@
         if (this.$store.getters['user/isSignedIn']) {
           this.modal = true;
         } else {
-          alert("ストーリーを作成するにはログインしてください");
-          window.location.href = "/login";
+          var result = confirm("ストーリーを作成するにはログインしてください");
+          if (result) {
+            window.location.href = "/login";
+          }
         }
       },
       closeModal: function(){

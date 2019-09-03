@@ -12,7 +12,7 @@
         <div id="con-wrap">
             <div id="con-wrap1">
                 <div id="main-contents">
-                    <div class="story-contents" v-for="value in get_contents_data">
+                    <div class="story-contents" v-for="(value,index) in get_contents_data" :key="index">
                         <p>{{value['content']}}</p>
                     </div>
                 </div>
@@ -94,22 +94,24 @@
                 return this.func_link_base + this.$route.params['story_room'];
             },
             get_story_author: function (event) {
+                console.log(this.$store.getters['story_manager/story_author_state']);
                 return this.$store.getters['story_manager/story_author_state'];
             }
         },
         methods: {
             hideshow: function () {
-                this.show = !this.show
-                // if (this.$store.getters['user/isSignedIn']) {
-                    
-                // } else {
-                //     alert("ストーリーを作成するにはログインしてください");
-                //     window.location.href = "/login";
-                // }
-                if (this.maiki == '閲覧モード') {
-                    this.maiki = '入力モード'
+                if (this.$store.getters['user/isSignedIn']) {
+                    this.show = !this.show
+                    if (this.maiki == '閲覧モード') {
+                        this.maiki = '入力モード'
+                    } else {
+                        this.maiki = '閲覧モード'
+                    }
                 } else {
-                    this.maiki = '閲覧モード'
+                    var result = confirm("ストーリーに参加するにはログインしてください");
+                    if (result) {
+                        window.location.href = "/login";
+                    }
                 }
             },
             on_submitted: function (event) {
@@ -119,7 +121,7 @@
             },
             on_delete: function (event) {
                 rdb.delete_story(this.$store.getters['user/user_id'], this.$route.params['story_room'])
-            }
+            },
         },
     }
 </script>
