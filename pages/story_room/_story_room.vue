@@ -1,7 +1,8 @@
 <template>
     <div id="story-room-wrap">
         <div id="story-room-title">
-            <h2>{{get_story_title}} {{get_story_last_update}}</h2>
+            <h2>{{get_story_title}}</h2>
+            <h3> {{get_story_last_update}}</h3>
             <!-- Twitter共有ボタン -->
             <div id="twitter-btn">
                 <a href="https://twitter.com/share" class="twitter-share-button" v-bind:data-text="get_card_data"
