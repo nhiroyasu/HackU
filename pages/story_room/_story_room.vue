@@ -4,7 +4,7 @@
             <h2>{{get_story_title}} {{get_story_last_update}}</h2>
             <!-- Twitter共有ボタン -->
             <div id="twitter-btn">
-                <a href="https://twitter.com/share" class="twitter-share-button" data-text="このストーリールームを共有する"
+                <a href="https://twitter.com/share" class="twitter-share-button" v-bind:data-text="get_card_data"
                     v-bind:data-url="get_twitter_card_url" data-lang="ja">Tweet</a>
                 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
@@ -93,8 +93,11 @@
             get_twitter_card_url: function (event) {
                 return this.func_link_base + this.$route.params['story_room'];
             },
+            get_card_data: function(event) {
+                var now = new Date();
+                return "「" + this.get_story_title+ "」" + "を共有する" + ' ' +now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+            },
             get_story_author: function (event) {
-                console.log(this.$store.getters['story_manager/story_author_state']);
                 return this.$store.getters['story_manager/story_author_state'];
             }
         },

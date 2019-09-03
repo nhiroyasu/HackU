@@ -40,12 +40,12 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
       <meta name="viewport" content="width=device-width,initial-scale=1.0">
       <title>colorinco</title>
       <meta property="og:title" content="${TITLE}">
-      <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/dust-cf800.appspot.com/o/AppMaterial%2Fdust-twi.png?alt=media">
+      <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/dust-cf800.appspot.com/o/AppMaterial%2Fdust_twi.png?alt=media">
       <meta property="og:description" content="${DESCRIPTION}">
       <meta property="og:type" content="article">
       <meta name="twitter:card" content="summary_large_image">
       <meta name="twitter:title" content="${TITLE}">
-      <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/dust-cf800.appspot.com/o/AppMaterial%2Fdust-twi.png?alt=media">
+      <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/dust-cf800.appspot.com/o/AppMaterial%2Fdust_twi.png?alt=media">
       <meta name="twitter:description" content="${DESCRIPTION}">
     </head>
     <body>
