@@ -3,7 +3,9 @@
         <div id="header-wrap">
 
             <div id="logo-wrap">
-                <nuxt-link class="link" id="logo" to="/">DUST</nuxt-link>
+                <nuxt-link class="link" id="logo" to="/">
+                <img src="../static/dust-logo.png" alt="">
+                </nuxt-link>
             </div>
             <nuxt-link v-if="show_login" id="login-btn" class="link" to="/login">Login</nuxt-link>
             <div v-else class="icon">
