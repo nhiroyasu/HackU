@@ -61,7 +61,7 @@
 
     #info-wrap {
         /* background: chartreuse; */
-        height: 8vw;
+        /* height: 8vw; */
     }
 
     #title {

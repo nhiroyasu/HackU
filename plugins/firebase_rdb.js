@@ -272,6 +272,7 @@ export default {
       });
     } else {
       console.log("error", "user id is not finded.");
+      store.commit('story_manager/onStoryAuthorChanged', false);
     }
   },
 

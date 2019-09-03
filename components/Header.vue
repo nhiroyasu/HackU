@@ -46,8 +46,8 @@ import Down from '~/components/Down.vue'
 <style scoped>
     #header {
         width: 100%;
-        height: 40px;
-        line-height: 40px;
+        height: 60px;
+        line-height: 60px;
         margin: 0;
         padding: 0;
         color: #111;

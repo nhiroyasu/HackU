@@ -4,7 +4,7 @@
     <div id="verarea">
       <div id="hello-word">
         <div id="hello-word-wrap">
-          <h1>Create novel with us</h1>
+          <h1>Let's write a novel together</h1>
           <p>みんなで一つの小説を作成しよう！</p>
         </div>
       </div>
@@ -17,7 +17,7 @@
         </div> -->
         <div class="cre-section cre-des">
           <h3>Click</h3>
-          <p>右のボタンを押して小説のタイトルと簡単な説明を入力しよう！
+          <p>右のボタンを押して小説のタイトルと簡単な説明を入力しましょう！
           </p>
         </div>
         <div class="cre-section cre-des">
@@ -103,26 +103,23 @@
           title: '',
           Description: ''
         }
-      }
-
-      ,
+      },
     created: function () {
-        firebase.process_Auth(this.$store).then((user) => {
-          rdb.load_stories(this.$store);
+      firebase.process_Auth(this.$store).then((user) => {
+        rdb.load_stories(this.$store);
 
-          rdb.process_load_user_log(this.$store, user.uid).then(sp => {
-              var user_log = sp.val();
-              user_log ? user_log : [];
-              var sid_list = [];
+        rdb.process_load_user_log(this.$store, user.uid).then(sp => {
+            var user_log = sp.val();
+            user_log ? user_log : [];
+            var sid_list = [];
 
-              for (var sid in user_log) {
-                sid_list.push(sid);
-              }
-              rdb.search_stories_info(this.$store, sid_list);
+            for (var sid in user_log) {
+              sid_list.push(sid);
             }
-
-          );
-        });
+            rdb.search_stories_info(this.$store, sid_list);
+          }
+        );
+      });
       }
 
       ,
@@ -131,8 +128,10 @@
         if (this.$store.getters['user/isSignedIn']) {
           this.modal = true;
         } else {
-          alert("ストーリーを作成するにはログインしてください");
-          window.location.href = "/login";
+          var result = confirm("ストーリーを作成するにはログインしてください");
+          if (result) {
+            window.location.href = "/login";
+          }
         }
       },
       closeModal: function(){
@@ -288,7 +287,7 @@
     /* background: blue; */
     width: 90%;
     margin: 0 auto;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px 10px;

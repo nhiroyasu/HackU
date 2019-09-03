@@ -22,7 +22,7 @@
     background-color:#17cddd; 
     background-image: -moz-linear-gradient(90deg, #2187e7 25%, #a0eaff);
     background-image: -webkit-linear-gradient(90deg, #2187e7 25%, #a0eaff);
-    border:1px solid #bbbbb;
+    border:1px solid #bbbbbb;
     width:10px;
     height:10px;
     float:left;
