@@ -77,37 +77,44 @@ export default {
   },
 
   create_story(store, title, desc) {
-    let user = firebase.auth().currentUser;
-    if (user) {
-      let now = new Date();
-      var now_time = [
-        now.getFullYear(),
-        ('0'+(now.getMonth()+1).toString()).slice(-2),
-        ('0'+now.getDate().toString()).slice(-2),
-        ('0'+now.getHours().toString()).slice(-2),
-        ('0'+now.getMinutes().toString()).slice(-2),
-        ('0'+now.getSeconds().toString()).slice(-2),
-        ('0'+now.getMilliseconds().toString()).slice(-3),
-        ].join('');
-      firebase.database().ref().child('stories').push({
-        "title": title,
-        "description": desc,
-        "author": {
-          "uid": firebase.auth().currentUser.uid,
-          "name": store.getters['user/name'],
-        },
-        "creation_date":　now_time,
-      }).then(result => {
-        // alert("creating a story is completed.");
-      }).catch(error => {
-        alert("creating a story is failed.");
-        console.log(error);
-      });
-    } else {
-      console.log("not login");
-      window.location.href = "/login";
-    }
-
+    this.process_create_story().then();
+  },
+  process_create_story(store, title, desc) {
+    return new Promise(resolve => {
+      let user = firebase.auth().currentUser;
+      if (user) {
+        let now = new Date();
+        var now_time = [
+          now.getFullYear(),
+          ('0'+(now.getMonth()+1).toString()).slice(-2),
+          ('0'+now.getDate().toString()).slice(-2),
+          ('0'+now.getHours().toString()).slice(-2),
+          ('0'+now.getMinutes().toString()).slice(-2),
+          ('0'+now.getSeconds().toString()).slice(-2),
+          ('0'+now.getMilliseconds().toString()).slice(-3),
+          ].join('');
+        var rootRef = firebase.database().ref();
+        var pushRef = rootRef.child('stories').push();
+        var pid = pushRef.key;
+        pushRef.set({
+          "title": title,
+          "description": desc,
+          "author": {
+            "uid": firebase.auth().currentUser.uid,
+            "name": store.getters['user/name'],
+          },
+          "creation_date":　now_time,
+        }).then(result => {
+          resolve(pid);
+        }).catch(error => {
+          alert("creating a story is failed.");
+          console.log(error);
+        });
+      } else {
+        console.log("not login");
+        window.location.href = "/login";
+      }
+    });
   },
 
   create_story_content(store, sid, content) {
@@ -153,10 +160,10 @@ export default {
     }
   },
 
-  delete_story(uid, sid) {
+  delete_story(router, sid) {
     firebase.database().ref('stories').child(sid).remove().then(r => {
       console.log("success?", r);
-      window.location.href = "/";
+      router.push('/');
     }).catch(error => {
       console.log("error", error);
     })
