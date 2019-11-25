@@ -124,7 +124,7 @@
                 }
             },
             on_delete: function (event) {
-                rdb.delete_story(this.$store.getters['user/user_id'], this.$route.params['story_room'])
+                rdb.delete_story(this.$router, this.$route.params['story_room'])
             },
         },
     }

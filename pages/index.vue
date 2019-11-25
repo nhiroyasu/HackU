@@ -101,24 +101,37 @@
         return {
           modal: false,
           title: '',
-          Description: ''
+          Description: '',
+          param: '',
         }
-      },
+    },
+
+    asyncData({query}) {
+      return {
+        param: query['redirect_to_room'],
+      }
+    },
+
     created: function () {
       firebase.process_Auth(this.$store).then((user) => {
-        rdb.load_stories(this.$store);
+        if (this.param === '' || !this.param) {
+          rdb.load_stories(this.$store);
 
-        rdb.process_load_user_log(this.$store, user.uid).then(sp => {
-            var user_log = sp.val();
-            user_log ? user_log : [];
-            var sid_list = [];
+          rdb.process_load_user_log(this.$store, user.uid).then(sp => {
+              console.log(this.$nuxt.$route.params);
+              var user_log = sp.val();
+              user_log ? user_log : [];
+              var sid_list = [];
 
-            for (var sid in user_log) {
-              sid_list.push(sid);
+              for (var sid in user_log) {
+                sid_list.push(sid);
+              }
+              rdb.search_stories_info(this.$store, sid_list);
             }
-            rdb.search_stories_info(this.$store, sid_list);
-          }
-        );
+          ); 
+        } else {
+          this.$router.push('/story_room/' + this.param);
+        }
       });
       }
 
@@ -139,7 +152,9 @@
       },
       doSend: function(){
         if(this.title.length > 0 || this.Description.length > 0 ) {
-          rdb.create_story(this.$store, this.title, this.Description);
+          rdb.process_create_story(this.$store, this.title, this.Description).then(push_id => {
+            this.$router.push("/story_room/" + push_id);
+          });
           this.closeModal();
         }
       },

@@ -66,8 +66,7 @@ export default {
   login_g_auth(store) {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(result => {
-      console.log("result", result);
-      if (result.isNewUser) {
+      if (result.additionalUserInfo.isNewUser) {
         rdb.create_user(result.user.uid, result.user.displayName, result.user.email).then(result => {
           window.location.href = "/";
         });

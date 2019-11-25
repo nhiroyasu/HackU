@@ -49,7 +49,7 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
       <meta name="twitter:description" content="${DESCRIPTION}">
     </head>
     <body>
-      <script type="text/javascript">window.location="${SITEURL}/story_room/${story_id}";</script>
+      <script type="text/javascript">window.location="${SITEURL}?redirect_to_room=${story_id}";</script>
     </body>
   </html>
   `
